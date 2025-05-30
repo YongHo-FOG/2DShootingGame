@@ -29,8 +29,25 @@ public class PlayerController : MonoBehaviour
     public GameObject bombPrefab; // 폭탄 효과 프리팹
     public int bombCount = 3; // 사용 가능한 폭탄 개수
 
+    // ========================
+    // ▼ 무적 및 깜빡임 처리 ▼
+    // ========================
+
+    public float invincibleDuration = 2f; // 무적 시간(피격 후, 2초)
+    public float blinkInterval = 0.4f; // 깜빡임 주기 (초)
+    private bool isInvincible = false;
+    private float invincibleTimer = 0f;
+    private float blinkTimer = 0f;
+
+    private SpriteRenderer spriteRenderer;
+
     // 내부에서 사용할 타이머 변수
     private float shotTimer = 0f;
+
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void Update()
     {
@@ -38,6 +55,32 @@ public class PlayerController : MonoBehaviour
         Move();
         HandleShooting();
         HandleBomb();
+
+        // 무적 상태일 때 타이머 및 깜빡임 처리
+        if (isInvincible)
+        {
+            invincibleTimer += Time.deltaTime;
+            blinkTimer += Time.deltaTime;
+
+            if (blinkTimer >= blinkInterval)
+            {
+                // 투명도 토글 (1f <-> 0.3f)
+                if (spriteRenderer.color.a == 1f)
+                    SetSpriteAlpha(0.3f);
+                else
+                    SetSpriteAlpha(1f);
+
+                blinkTimer = 0f;
+            }
+
+            // 무적 시간이 끝나면 무적 해제 및 투명도 원복
+            if (invincibleTimer >= invincibleDuration)
+            {
+                SetSpriteAlpha(1f);
+                isInvincible = false;
+                invincibleTimer = 0f;
+            }
+        }
     }
 
     // ========================
@@ -95,5 +138,48 @@ public class PlayerController : MonoBehaviour
             // 폭탄 수 차감
             bombCount--;
         }
+    }
+
+    // ========================
+    // ■ 데미지 처리 함수
+    // ========================
+    public void TakeDamage(int damage)
+    {
+        // 무적 상태면 데미지 무시
+        if (isInvincible) return;
+
+        // GameManager에게 체력 관리 요청
+        GameManager.Instance.PlayerTakeDamage(damage);
+
+        // 데미지 입었을 때 무적 상태 시작 및 타이머 초기화
+        isInvincible = true;
+        invincibleTimer = 0f;
+        blinkTimer = 0f;
+
+        // TODO: 데미지 맞았을 때 효과음, 이펙트 등 처리 가능
+    }
+
+    // ========================
+    // ■ 플레이어 죽음 처리 함수 (GameManager 호출)
+    // ========================
+    public void Die()
+    {
+        Debug.Log("Player Dead");
+
+        // 플레이어 오브젝트 비활성화 (죽음 상태 표현)
+        gameObject.SetActive(false);
+
+        // 게임매니저에 플레이어 사망 알림 (게임오버 처리 담당)
+        GameManager.Instance.OnPlayerDead();
+    }
+
+    // ========================
+    // ■ 스프라이트 투명도 조절 함수
+    // ========================
+    private void SetSpriteAlpha(float alpha)
+    {
+        Color c = spriteRenderer.color;
+        c.a = alpha;
+        spriteRenderer.color = c;
     }
 }
