@@ -53,6 +53,11 @@ public class PlayerController : MonoBehaviour
                 invincibleTimer = 0f;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            TakeDamage(1);
+        }
     }
 
     void Move()
@@ -109,4 +114,6 @@ public class PlayerController : MonoBehaviour
         c.a = alpha;
         spriteRenderer.color = c;
     }
+
+    
 }
