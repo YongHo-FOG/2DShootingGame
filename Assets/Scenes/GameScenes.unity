@@ -484,7 +484,7 @@ MonoBehaviour:
   maxHealth: 2
   maxBombCount: 3
   player: {fileID: 1777131261}
-  bombPrefab: {fileID: 100002, guid: 4bf22a1d8d9e7724b9af67921436851d, type: 3}
+  bombPrefab: {fileID: 0}
   bombUI: {fileID: 1751890464}
   healthUI: {fileID: 1590142777}
 --- !u!4 &1296836170
