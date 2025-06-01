@@ -4,22 +4,30 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // 싱글톤 패턴 (어디서든 쉽게 접근 가능)
+    // 싱글톤 인스턴스 (전역 접근용)
     public static GameManager Instance { get; private set; }
 
     [Header("Player Health Setting")]
-    public int maxHealth = 2;      // 최대 체력
-    private int currentHealth;     // 현재 체력
+    public int maxHealth = 2;           // 최대 체력
+    private int currentHealth;          // 현재 체력
 
-    public PlayerController player; // 플레이어 참조 (인스펙터에 연결)
+    [Header("Player Bomb Setting")]
+    public int maxBombCount = 3;        // 최대 폭탄 수
+    private int currentBombCount;       // 현재 폭탄 수
+
+    [Header("References")]
+    public PlayerController player;     // 플레이어 참조
+    public GameObject bombPrefab;       // 폭탄 프리팹
+    public BombUI bombUI;               // 폭탄 UI 연결
+    public HealthUI healthUI;           // 체력 UI 연결
 
     void Awake()
     {
-        // 싱글톤 초기화
+        // 싱글톤 설정
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴 안됨
+            DontDestroyOnLoad(gameObject); // 씬이 전환되어도 유지
         }
         else
         {
@@ -30,59 +38,73 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // 초기 체력 세팅
+        // 초기 체력/폭탄 설정
         currentHealth = maxHealth;
+        currentBombCount = maxBombCount;
+
+        // UI 생성 및 초기화
+        healthUI?.CreateHearts(maxHealth);
+        bombUI?.CreateBombIcons(maxBombCount);
     }
 
-    // ========================
-    // ■ 플레이어가 데미지를 입었을 때 호출하는 함수
-    // ========================
+    // ======================================
+    // ▼ 체력 관련 처리 ▼
+    // ======================================
+
     public void PlayerTakeDamage(int damage)
     {
         if (currentHealth <= 0) return;
 
         currentHealth -= damage;
-        Debug.Log($"Player Health: {currentHealth}/{maxHealth}");
+
+        Debug.Log($"[GameManager] 체력: {currentHealth}/{maxHealth}");
 
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            // 죽음 판단 후 플레이어에게 죽음 처리 요청
-            if (player != null)
-                player.Die();
+            player?.Die(); // 플레이어에게 죽음 처리 요청
         }
-        else
-        {
-            // 체력 남아있으면 데미지 효과 등 추가 처리 가능
-        }
+
+        // UI 갱신
+        healthUI?.UpdateHearts(currentHealth);
     }
 
-    // ========================
-    // ■ 플레이어 사망 처리
-    // ========================
-    // ========================
-    // ■ 플레이어 사망 후 게임오버 처리
-    // ========================
-    public void OnPlayerDead()
-    {
-        Debug.Log("GameManager: Player is Dead - Game Over");
-
-        // TODO: 게임오버 UI 호출, 씬 전환 등 게임 전체 처리 여기서 진행
-    }
-
-    // ========================
-    // ■ 플레이어 체력 초기화 (예: 스테이지 시작 시)
-    // ========================
     public void ResetPlayerHealth()
     {
         currentHealth = maxHealth;
+        healthUI?.UpdateHearts(currentHealth);
     }
 
-    // ========================
-    // ■ 현재 체력 반환 (필요 시)
-    // ========================
-    public int GetPlayerHealth()
+    public int GetPlayerHealth() => currentHealth;
+
+    public void OnPlayerDead()
     {
-        return currentHealth;
+        Debug.Log("[GameManager] 플레이어 사망 - 게임오버 처리 예정");
+        // TODO: 게임오버 UI 처리
     }
+
+    // ======================================
+    // ▼ 폭탄 관련 처리 ▼
+    // ======================================
+
+    public void TryUseBomb(Vector3 position)
+    {
+        if (currentBombCount <= 0) return;
+
+        // 폭탄 생성
+        Instantiate(bombPrefab, position, Quaternion.identity);
+
+        // 수량 감소 및 UI 갱신
+        currentBombCount--;
+        bombUI?.UpdateBombIcons(currentBombCount);
+    }
+
+    public void ResetBombCount()
+    {
+        currentBombCount = maxBombCount;
+        bombUI?.UpdateBombIcons(currentBombCount);
+    }
+
+    public int GetCurrentBombCount() => currentBombCount;
 }
+
