@@ -2,64 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletController : MonoBehaviour
-{
-    [Header("Bullet Settings")]
-    [SerializeField] private float speed = 7f;      // 총알 이동 속도
-    [SerializeField] private float lifeTime = 5f;   // 총알이 존재할 최대 시간(초)
-
-    private Vector3 moveDirection;   // 총알이 움직일 방향 (정규화된 벡터)
-    private float timer = 0f;        // 총알 생성 후 경과 시간 체크용
-
     /// <summary>
-    /// 총알의 이동 방향을 초기화하는 함수
-    /// 공격자(몬스터)가 총알을 발사할 때 호출함
+    /// 적 총알 - 지정된 방향으로 직선 이동 + 충돌 처리 + 화면 밖 제거
     /// </summary>
-    /// <param name="direction">발사 방향 벡터</param>
-    public void SetDirection(Vector3 direction)
+    public class EnemyBulletController : MonoBehaviour
     {
-        moveDirection = direction.normalized; // 방향을 단위벡터로 변환해서 저장
-    }
+        public float speed = 5f;
+        public float lifetime = 5f; // 최대 생존 시간 (초)
+        private Vector3 moveDirection;
 
-    void Update()
-    {
-        // 총알 위치를 매 프레임마다 이동 방향과 속도에 맞춰 갱신
-        transform.position += moveDirection * speed * Time.deltaTime;
-
-        // 총알의 존재 시간을 누적
-        timer += Time.deltaTime;
-
-        // 설정된 생존 시간을 넘으면 총알 오브젝트 파괴
-        if (timer > lifeTime)
+        void Start()
         {
-            Destroy(gameObject);
+            // 일정 시간이 지나면 자동으로 파괴
+            Destroy(gameObject, lifetime);
         }
-    }
 
-    /// <summary>
-    /// 충돌 감지 처리 함수 (2D 물리 충돌)
-    /// 충돌한 콜라이더가 "Player" 태그를 가지면 데미지 처리 후 총알 삭제
-    /// </summary>
-    /// <param name="other">충돌한 콜라이더</param>
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // 충돌한 오브젝트가 플레이어일 경우
-        if (other.CompareTag("Player"))
+        void Update()
         {
-            // 플레이어 스크립트에서 데미지 받는 함수 호출 (TakeDamage 함수가 있다고 가정)
-            PlayerController player = other.GetComponent<PlayerController>();
-            if (player != null)
+            transform.position += moveDirection * speed * Time.deltaTime;
+        }
+
+        /// <summary>
+        /// EnemyA로부터 방향을 전달받음
+        /// </summary>
+        public void SetDirection(Vector3 direction)
+        {
+            moveDirection = direction.normalized;
+        }
+
+        /// <summary>
+        /// 플레이어와 충돌 시 데미지 적용 후 제거
+        /// </summary>
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
             {
-                player.TakeDamage(1); // 데미지 1만큼 주기 (필요에 따라 조절 가능)
-            }
+                PlayerController player = other.GetComponent<PlayerController>();
+                if (player != null)
+                {
+                    player.TakeDamage(1);
+                }
 
-            // 총알은 충돌 후 파괴
-            Destroy(gameObject);
-        }
-        else if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
-        {
-            // 벽이나 장애물과 충돌 시에도 총알 파괴
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
+            else if (other.CompareTag("Obstacle")) // 필요 시 장애물 등도 처리 가능
+            {
+                Destroy(gameObject);
+            }
         }
     }
-}

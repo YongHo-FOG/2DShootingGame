@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,15 +13,16 @@ public class PlayerController : MonoBehaviour
     public Transform shotPoint;
     public float shotInterval = 0.2f;
 
-    // ¹«Àû ¹× ±ôºıÀÓ
+    [Header("Invincibility Settings")]
     public float invincibleDuration = 2f;
     public float blinkInterval = 0.4f;
+
     private bool isInvincible = false;
     private float invincibleTimer = 0f;
     private float blinkTimer = 0f;
+    private float shotTimer = 0f;
 
     private SpriteRenderer spriteRenderer;
-    private float shotTimer = 0f;
 
     void Start()
     {
@@ -33,26 +34,9 @@ public class PlayerController : MonoBehaviour
         Move();
         HandleShooting();
         HandleBomb();
+        HandleInvincibility(); // ê¹œë¹¡ì„ ì½”ë“œ ë¶„ë¦¬
 
-        // ¹«Àû »óÅÂ ±ôºıÀÓ Ã³¸®
-        if (isInvincible)
-        {
-            invincibleTimer += Time.deltaTime;
-            blinkTimer += Time.deltaTime;
-
-            if (blinkTimer >= blinkInterval)
-            {
-                SetSpriteAlpha(spriteRenderer.color.a == 1f ? 0.3f : 1f);
-                blinkTimer = 0f;
-            }
-
-            if (invincibleTimer >= invincibleDuration)
-            {
-                SetSpriteAlpha(1f);
-                isInvincible = false;
-                invincibleTimer = 0f;
-            }
-        }
+        ClampToScreen(); // ğŸ”¹ í™”ë©´ ë°–ìœ¼ë¡œ ëª» ë‚˜ê°€ê²Œ ì œí•œ
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -86,8 +70,28 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            // ÆøÅº ¿äÃ»À» GameManager¿¡ Àü´Ş
             GameManager.Instance.TryUseBomb(transform.position);
+        }
+    }
+
+    void HandleInvincibility()
+    {
+        if (!isInvincible) return;
+
+        invincibleTimer += Time.deltaTime;
+        blinkTimer += Time.deltaTime;
+
+        if (blinkTimer >= blinkInterval)
+        {
+            SetSpriteAlpha(spriteRenderer.color.a == 1f ? 0.3f : 1f);
+            blinkTimer = 0f;
+        }
+
+        if (invincibleTimer >= invincibleDuration)
+        {
+            SetSpriteAlpha(1f);
+            isInvincible = false;
+            invincibleTimer = 0f;
         }
     }
 
@@ -103,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("[Player] »ç¸Á Ã³¸®");
+        Debug.Log("[Player] ì‚¬ë§ ì²˜ë¦¬");
         gameObject.SetActive(false);
         GameManager.Instance.OnPlayerDead();
     }
@@ -115,5 +119,24 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = c;
     }
 
-    
+    /// <summary>
+    /// ğŸ”¹ í”Œë ˆì´ì–´ê°€ ì¹´ë©”ë¼ í™”ë©´ ë°–ìœ¼ë¡œ ë‚˜ê°€ì§€ ì•Šë„ë¡ ìœ„ì¹˜ ì œí•œ
+    /// </summary>
+    void ClampToScreen()
+    {
+        Vector3 pos = transform.position;
+
+        Camera cam = Camera.main;
+
+        Vector3 min = cam.ViewportToWorldPoint(new Vector3(0, 0, cam.nearClipPlane));
+        Vector3 max = cam.ViewportToWorldPoint(new Vector3(1, 1, cam.nearClipPlane));
+
+        float halfWidth = spriteRenderer.bounds.extents.x;
+        float halfHeight = spriteRenderer.bounds.extents.y;
+
+        pos.x = Mathf.Clamp(pos.x, min.x + halfWidth, max.x - halfWidth);
+        pos.y = Mathf.Clamp(pos.y, min.y + halfHeight, max.y - halfHeight);
+
+        transform.position = pos;
+    }
 }
