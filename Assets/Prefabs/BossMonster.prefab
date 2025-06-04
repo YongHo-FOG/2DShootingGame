@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 2737909593163683348}
   - component: {fileID: 4356272043030955}
   - component: {fileID: 7773462063455143802}
+  - component: {fileID: 7383059213159602734}
   m_Layer: 0
   m_Name: BossMonster
   m_TagString: Monster
@@ -162,3 +163,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.8828125}
   m_EdgeRadius: 0
+--- !u!114 &7383059213159602734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7149052265037275283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f6eb7634699aa24c991cd3d04c15789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  bulletPrefab: {fileID: 6157625937238615177, guid: cdf02ec0b43ad9f47a353df69397ddaa, type: 3}
+  fireRate: 2
+  maxHealth: 10

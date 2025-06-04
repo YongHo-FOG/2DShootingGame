@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
             
     }
 
-    public void MonsterDie()
+    protected virtual void MonsterDie()
     {
         Debug.Log("몬스터 죽음");
         Destroy(gameObject);
