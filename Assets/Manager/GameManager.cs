@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -79,8 +80,8 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerDead()
     {
-        Debug.Log("[GameManager] 플레이어 사망 - 게임오버 처리 예정");
-        // TODO: 게임오버 UI 처리
+        Debug.Log("[GameManager] 플레이어 사망 - 게임오버 처리 중");
+        SceneManager.LoadScene("GameOverScene");
     }
 
     // ======================================
