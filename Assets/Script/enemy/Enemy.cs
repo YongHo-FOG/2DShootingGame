@@ -12,6 +12,9 @@ public class Enemy : MonoBehaviour
     public GameObject bulletPrefab;    // 발사할 탄환 프리팹
     public float fireRate = 2f;        // 발사 주기
     private float fireTimer = 0f;
+    [Header("Monster Health Setting")]
+    public int maxHealth = 2;           // 최대 체력
+    private int currentHealth;          // 현재 체력
 
     void Update()
     {
@@ -49,6 +52,21 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int amount)
+    {
+        currentHealth -= amount;
+        if (currentHealth <= 0)
+        {
+            MonsterDie();
+        }
+            
+    }
 
-    // 이 아래로 피격, 체력, 드랍 등 추가 예정
+    public void MonsterDie()
+    {
+        Debug.Log("몬스터 죽음");
+        Destroy(gameObject);
+    }
+
+    // 이 아래로 드랍 등 추가 예정
 }

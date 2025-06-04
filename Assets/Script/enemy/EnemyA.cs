@@ -31,10 +31,5 @@ public class EnemyA : MonoBehaviour
         transform.Translate(Vector3.down * speed * Time.deltaTime);
     }
 
-    public void TakeDamage(int amount)
-    {
-        currentHealth -= amount;
-        if (currentHealth <= 0)
-            Destroy(gameObject);
-    }
+    
 }

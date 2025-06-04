@@ -48,10 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe301a168cd2c2b4fbb064ec1950e026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 20
   slowMoveMultiplier: 0.5
-  bulletPrefab: {fileID: 6157625937238615177, guid: cdf02ec0b43ad9f47a353df69397ddaa, type: 3}
-  shotPoint: {fileID: 0}
+  bulletPrefab: {fileID: 2179555652933759110, guid: c8d0a4edbe2a39d4eb944a8d20b9a829, type: 3}
+  shotPoint: {fileID: 1803391917970566671}
   shotInterval: 0.2
   invincibleDuration: 2
   blinkInterval: 0.4

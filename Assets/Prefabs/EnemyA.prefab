@@ -41,11 +41,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3732502388680784567}
   - component: {fileID: 9120165833720013871}
-  - component: {fileID: -7240213101005774407}
-  - component: {fileID: -6490786549671242163}
+  - component: {fileID: -4157146299942443613}
+  - component: {fileID: 947498410034371334}
   m_Layer: 0
   m_Name: EnemyA
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7240213101005774407
+--- !u!114 &-4157146299942443613
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,23 +127,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 7548549131567374524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 990623af57bc2ce4089e0d3cb6285271, type: 3}
+  m_Script: {fileID: 11500000, guid: 9651a8325396c5244a6a8a15eee4d8ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  maxHealth: 1
---- !u!114 &-6490786549671242163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7548549131567374524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8150fa4ee3403db448b6f29faefce5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  speed: 2
   bulletPrefab: {fileID: 6157625937238615177, guid: cdf02ec0b43ad9f47a353df69397ddaa, type: 3}
-  bulletSpeed: 5
-  firePoint: {fileID: 2009076151909829394}
+  fireRate: 2
+  maxHealth: 1
+--- !u!58 &947498410034371334
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7548549131567374524}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
