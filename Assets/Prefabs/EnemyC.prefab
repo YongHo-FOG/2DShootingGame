@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5133607992627470871}
   - component: {fileID: 4493113383860606637}
+  - component: {fileID: -4195878361749076249}
   m_Layer: 0
   m_Name: EnemyC
   m_TagString: Untagged
@@ -116,3 +117,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-4195878361749076249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367508024060999488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8fa494b79183848a1f77655356e8bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  bulletPrefab: {fileID: 0}
+  fireRate: 2

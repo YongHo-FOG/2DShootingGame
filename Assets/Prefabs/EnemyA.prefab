@@ -41,7 +41,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3732502388680784567}
   - component: {fileID: 9120165833720013871}
-  - component: {fileID: -5856422153197228362}
+  - component: {fileID: -7240213101005774407}
+  - component: {fileID: -6490786549671242163}
   m_Layer: 0
   m_Name: EnemyA
   m_TagString: Untagged
@@ -117,7 +118,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-5856422153197228362
+--- !u!114 &-7240213101005774407
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,6 +131,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  maxHealth: 3
+  maxHealth: 1
+--- !u!114 &-6490786549671242163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7548549131567374524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8150fa4ee3403db448b6f29faefce5e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6157625937238615177, guid: cdf02ec0b43ad9f47a353df69397ddaa, type: 3}
-  fireInterval: 2
+  bulletSpeed: 5
+  firePoint: {fileID: 2009076151909829394}

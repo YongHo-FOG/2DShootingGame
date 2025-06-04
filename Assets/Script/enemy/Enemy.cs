@@ -49,5 +49,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
+
     // 이 아래로 피격, 체력, 드랍 등 추가 예정
 }
